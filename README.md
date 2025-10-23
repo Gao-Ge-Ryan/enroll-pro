@@ -7,7 +7,7 @@ English version | [中文版](README_cn.md)
 [![docker pulls](https://img.shields.io/docker/pulls/projecthami/hami.svg)](https://hub.docker.com/r/projecthami/hami)
 
 
-## Project-HAMi: Heterogeneous AI Computing Virtualization Middleware
+## Enroll Pro: 可定制化报名系统
 
 ## Introduction
 

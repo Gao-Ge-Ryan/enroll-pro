@@ -1,6 +1,6 @@
-[English version](README.md) | 中文版 | [日本語版](README_ja.md)
+[English version](README.md) | 中文版 
 
-<img src="imgs/hami-horizontal-colordark.png" width="600px">
+<img src="imgs/logo.png" width="600px">
 
 [![LICENSE](https://img.shields.io/github/license/Project-HAMi/HAMi.svg)](/LICENSE)
 [![build status](https://github.com/Project-HAMi/HAMi/actions/workflows/ci.yaml/badge.svg)](https://github.com/Project-HAMi/HAMi/actions/workflows/ci.yaml)
@@ -15,89 +15,33 @@
 [![website](https://img.shields.io/badge/官网-blue)](http://project-hami.io)
 [![Contact Me](https://img.shields.io/badge/联系我们-blue)](https://github.com/Project-HAMi/HAMi#contact)
 
-## Project-HAMi：异构 AI 计算虚拟化中间件
+## Enroll Pro: 可定制化报名系统
 
 ## 简介
 
-HAMi（前身为 'k8s-vGPU-scheduler'）是一个面向 Kubernetes 的异构设备管理中间件。它可以管理不同类型的异构设备（如 GPU、NPU、MLU、DCU 等），实现异构设备在 Pod 之间的共享，并基于设备拓扑和调度策略做出更优的调度决策。
+可定制化的报名系统，适用于考试报名系统，活动报名系统等任何报名形式的场景，可用于生产、企业级别的项目。 项目和代码经过严格审核测试，支持私有化部署。
 
-HAMi 旨在消除不同异构设备之间的差异，为用户提供统一的管理接口，无需对应用程序进行任何修改。截至 2024 年 12 月，HAMi 除了在互联网、公有云、私有云等领域外，在金融、证券、能源、运营商、教育、制造业等垂直领域，也得到了广泛采纳。超过 40 家企业和机构不仅是最终用户，同时也是活跃的贡献者。
+## 系统技术架构
 
-![cncf_logo](imgs/cncf-logo.png)
-
-HAMi 是 [Cloud Native Computing Foundation](https://cncf.io/)(CNCF) 基金会的沙箱项目和 [landscape](https://landscape.cncf.io/?item=orchestration-management--scheduling-orchestration--hami) 项目，同时也是 [CNAI Landscape 项目](https://landscape.cncf.io/?group=cnai&item=cnai--general-orchestration--hami)。
-
-## 虚拟化能力
-
-HAMi 可为多种异构设备提供虚拟化功能，支持设备共享和资源隔离。关于支持设备虚拟化的设备列表，请参见[支持的设备](#支持的设备)。
-
-### 设备共享能力
-
-- 通过设置核心使用率（百分比），进行设备的部分分配
-- 通过设置显存（单位：MB），进行设备的部分分配
-- 对流式多处理器进行硬限制
-- 无需对现有程序进行任何修改
-- 支持[动态MIG切片](docs/dynamic-mig-support_cn.md)能力，[样例](examples/nvidia/dynamic_mig_example.yaml)
-
-<img src="./imgs/example.png" width = "500" /> 
-
-### 设备资源隔离能力
-
-HAMi支持设备资源的硬隔离
-一个以 NVIDIA GPU 为例硬隔离的简单展示：
-```yaml
-      resources:
-        limits:
-          nvidia.com/gpu: 1 # 请求 1 个虚拟 GPU
-          nvidia.com/gpumem: 3000 # 每个虚拟 GPU 包含 3000M 设备内存
-```
-
-在容器内将看到 3G 设备内存
-
-![img](./imgs/hard_limit.jpg)
-
-> 注意：
-1. **安装HAMi后，节点上注册的 `nvidia.com/gpu` 值默认为vGPU数量**
-2. **pod中申请资源时，`nvidia.com/gpu` 指当前pod需要的物理GPU数量**
-
-### 支持的设备
-
-[NVIDIA GPU](https://github.com/Project-HAMi/HAMi#preparing-your-gpu-nodes)   
-[寒武纪 MLU](docs/cambricon-mlu-support.md)   
-[海光 DCU](docs/hygon-dcu-support.md)   
-[天数智芯 GPU](docs/iluvatar-gpu-support.md)   
-[摩尔线程 GPU](docs/mthreads-support.md)   
-[昇腾 NPU](https://github.com/Project-HAMi/ascend-device-plugin/blob/main/README.md)   
-[沐曦 GPU](docs/metax-support.md)   
-
-## 架构
-
-<img src="./imgs/hami-arch.png" width = "600" /> 
-
-HAMi 由多个组件组成，包括统一的 mutatingwebhook、统一的调度器扩展器、不同的设备插件以及针对每种异构 AI 设备的容器内虚拟化技术。
+后端: Java:8、SpringBoot:2.5.15、Mybatis、Gradle、Minio
+前端：Vue3
+数据库：Mysql:8.0.21、Redis:latest
+部署: Docker、Docker-compose
 
 ## 快速开始
 
-### 选择你的调度器
-
-[![kube-scheduler](https://img.shields.io/badge/kube-scheduler-blue)](#前置条件)
-[![volcano-scheduler](https://img.shields.io/badge/volcano-scheduler-orange)](docs/how-to-use-volcano-vgpu.md)
-
 ### 前置条件
 
-运行 NVIDIA 设备插件的前置条件如下：
+运行系统服务器前置条件如下：
 
-- NVIDIA 驱动 >= 440
-- nvidia-docker 版本 > 2.0
-- containerd/docker/cri-o 容器运行时的默认运行时配置为 nvidia
-- Kubernetes 版本 >= 1.18
-- glibc >= 2.17 & glibc < 2.30
-- 内核版本 >= 3.10
-- helm > 3.0
+- 操作系统 = centos、Ubuntu、Debian
+- 系统硬盘 > 40G
+- 运行内存 > 4G
+- 部署依赖软件 = docker、docker-compose
 
-### 安装
+### 启动运行
 
-首先，通过添加标签 "gpu=on" 来标记你的 GPU 节点以进行 HAMi 调度。没有此标签的节点将无法被我们的调度器管理。
+首先，进入根目录下deploy下执行以下命令：。
 
 ```
 kubectl label nodes {nodeid} gpu=on
@@ -125,11 +69,17 @@ kubectl get pods -n kube-system
 
 如果 `vgpu-device-plugin` 和 `vgpu-scheduler` pod 都处于 *Running* 状态，则安装成功。你可以在[这里](examples/nvidia/default_use.yaml)尝试示例。
 
-### Web 界面
+### Web 界面演示环境
 
-[HAMi-WebUI](https://github.com/Project-HAMi/HAMi-WebUI) 从 HAMi v2.4 版本开始可用
+[用户端](https://www.enrollpro.top) 报名界面，用户使用的门户界面
 
-安装指南请点击[这里](https://github.com/Project-HAMi/HAMi-WebUI/blob/main/docs/installation/helm/index.md)
+[企业端](https://enterprise.enrollpro.top) 企业管理界面，用于企业管理自己企业发布的报名信息，报名信息审核维护等。
+
+[管理端端](https://admin.enrollpro.top) 系统管理界面，用于维护系统，用户管理、权限角色、日志监控等。
+
+```
+测试账号可自行注册，也可使用预置的超级管理员账号（账号：123@qq.com 密码：Hh123@qqcom）。
+```
 
 ### 监控
 
