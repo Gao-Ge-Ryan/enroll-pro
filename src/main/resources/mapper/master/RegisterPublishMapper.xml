@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.RegisterPublishMapper">
+    <resultMap type="top.gaogle.pojo.model.RegisterPublishModel" id="RegisterPublishMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="allocateSpotFlag" column="allocate_spot_flag" jdbcType="INTEGER"/>
+        <result property="publishStatus" column="publish_status" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="ticketTemplateFlag" column="ticket_template_flag" jdbcType="INTEGER"/>
+        <result property="templateFlag" column="template_flag" jdbcType="INTEGER"/>
+        <result property="templateCopy" column="template_copy" jdbcType="VARCHAR"/>
+        <result property="startAt" column="start_at" jdbcType="INTEGER"/>
+        <result property="endAt" column="end_at" jdbcType="INTEGER"/>
+        <result property="activityFlag" column="activity_flag" jdbcType="VARCHAR"/>
+        <result property="activityStartAt" column="activity_start_at" jdbcType="INTEGER"/>
+        <result property="activityEndAt" column="activity_end_at" jdbcType="INTEGER"/>
+        <result property="ticketFlag" column="ticket_flag" jdbcType="VARCHAR"/>
+        <result property="ticketStartAt" column="ticket_start_at" jdbcType="INTEGER"/>
+        <result property="ticketEndAt" column="ticket_end_at" jdbcType="INTEGER"/>
+        <result property="ticketAttach" column="ticket_attach" jdbcType="VARCHAR"/>
+        <result property="payFlag" column="pay_flag" jdbcType="VARCHAR"/>
+        <result property="cost" column="cost" jdbcType="INTEGER"/>
+        <result property="scoreFlag" column="score_flag" jdbcType="VARCHAR"/>
+        <result property="scoreStartAt" column="score_start_at" jdbcType="INTEGER"/>
+        <result property="scoreEndAt" column="score_end_at" jdbcType="INTEGER"/>
+        <result property="interviewTicketFlag" column="interview_ticket_flag" jdbcType="VARCHAR"/>
+        <result property="interviewTicketTemplateFlag" column="interview_ticket_template_flag" jdbcType="INTEGER"/>
+        <result property="interviewTicketStartAt" column="interview_ticket_start_at" jdbcType="INTEGER"/>
+        <result property="interviewTicketEndAt" column="interview_ticket_end_at" jdbcType="INTEGER"/>
+        <result property="interviewTicketExplain" column="interview_ticket_explain" jdbcType="VARCHAR"/>
+        <result property="interviewTicketAttach" column="interview_ticket_attach" jdbcType="VARCHAR"/>
+        <result property="interviewScoreFlag" column="interview_score_flag" jdbcType="VARCHAR"/>
+        <result property="interviewScoreProportion" column="interview_score_proportion" jdbcType="DECIMAL"/>
+        <result property="interviewScoreStartAt" column="interview_score_start_at" jdbcType="INTEGER"/>
+        <result property="interviewScoreEndAt" column="interview_score_end_at" jdbcType="INTEGER"/>
+        <result property="offerStatusShowFlag" column="offer_status_show_flag" jdbcType="VARCHAR"/>
+        <result property="offerStatusShowExplain" column="offer_status_show_explain" jdbcType="VARCHAR"/>
+
+        <result property="delAt" column="del_at" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+        <result property="delFlag" column="del_flag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id
+        , title, status,allocate_spot_flag,publish_status, description, pay_flag,cost ,start_at, end_at, activity_flag, activity_start_at, activity_end_at,ticket_flag, ticket_start_at, ticket_end_at, ticket_attach, score_flag, score_start_at, score_end_at, interview_ticket_flag, interview_ticket_template_flag, interview_ticket_start_at, interview_ticket_end_at, interview_ticket_explain, interview_ticket_attach, interview_score_flag, interview_score_proportion, interview_score_start_at, interview_score_end_at, offer_status_show_flag, offer_status_show_explain, ticket_template_flag,template_flag, template_copy, enterprise_id, del_flag,del_at,create_by, create_at, update_by, update_at
+    </sql>
+    <insert id="insert">
+        insert into register_publish(<include refid="sqlAllColumns"/>)
+        values (#{id},#{title}, #{status},#{allocateSpotFlag},#{publishStatus}, #{description},
+        #{payFlag},#{cost},#{startAt}, #{endAt},
+        #{activityFlag},#{activityStartAt},#{activityEndAt},#{ticketFlag}, #{ticketStartAt},
+        #{ticketEndAt}, #{ticketAttach}, #{scoreFlag}, #{scoreStartAt}, #{scoreEndAt},#{interviewTicketFlag},
+        #{interviewTicketTemplateFlag}, #{interviewTicketStartAt}, #{interviewTicketEndAt}, #{interviewTicketExplain},
+        #{interviewTicketAttach}, #{interviewScoreFlag}, #{interviewScoreProportion}, #{interviewScoreStartAt},
+        #{interviewScoreEndAt}, #{offerStatusShowFlag}, #{offerStatusShowExplain},#{ticketTemplateFlag},
+        #{templateFlag}, #{templateCopy},
+        #{enterpriseId}, #{delFlag},#{delAt},#{createBy}, #{createAt}, #{updateBy}, #{updateAt})
+    </insert>
+    <update id="enterpriseUpdate">
+        update register_publish
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="ticketStartAt != null">
+                ticket_start_at = #{ticketStartAt},
+            </if>
+            <if test="ticketEndAt != null">
+                ticket_end_at = #{ticketEndAt},
+            </if>
+            <if test="ticketAttach != null and ticketAttach != ''">
+                ticket_attach = #{ticketAttach},
+            </if>
+            <if test="activityStartAt != null">
+                activity_start_at = #{activityStartAt},
+            </if>
+            <if test="activityEndAt != null">
+                activity_end_at = #{activityEndAt},
+            </if>
+            <if test="scoreStartAt != null">
+                score_start_at = #{scoreStartAt},
+            </if>
+            <if test="scoreEndAt != null">
+                score_end_at = #{scoreEndAt},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateAllocateSpotFlagById">
+        update register_publish
+        set allocate_spot_flag =#{allocateSpotFlag},
+            update_by          =#{updateBy},
+            update_at          =#{updateAt}
+        where id = #{id}
+    </update>
+    <update id="updateStatusById">
+        update register_publish
+        set status =#{status}
+        where id = #{id}
+    </update>
+
+
+    <update id="updateDelFlagByIdAndEnterpriseId">
+        update register_publish
+        set del_flag =#{delFlag},
+            del_at   =#{delAt}
+        where id = #{id}
+          and enterprise_id = #{enterpriseId}
+    </update>
+    <update id="updateDelFlagToTrueByEnterpriseId">
+        update register_publish
+        set del_flag = true,
+            del_at   =#{delAt}
+        where del_flag = false
+          and enterprise_id = #{enterpriseId}
+    </update>
+    <update id="updateOfferStatusShowFlagAndExplain">
+        update register_publish
+        set offer_status_show_flag = #{offerStatusShowFlag},
+            offer_status_explain   = #{offerStatusExplain}
+        where id = #{registerPublishId}
+    </update>
+
+    <insert id="batchUpdateStatus" useGeneratedKeys="false">
+        INSERT INTO register_publish (id, status)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.status})
+        </foreach>
+        ON DUPLICATE KEY UPDATE status = VALUES(status);
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from register_publish
+        where id = #{id}
+    </delete>
+    <select id="queryByPageAndCondition" resultMap="RegisterPublishMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from register_publish
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="startAt != null">
+                and start_at = #{startAt}
+            </if>
+            <if test="endAt != null">
+                and end_at = #{endAt}
+            </if>
+            <if test="ticketFlag != null">
+                and ticket_flag = #{ticketFlag}
+            </if>
+            <if test="ticketStartAt != null">
+                and ticket_start_at = #{ticketStartAt}
+            </if>
+            <if test="ticketEndAt != null">
+                and ticket_end_at = #{ticketEndAt}
+            </if>
+            <if test="ticketAttach != null and ticketAttach != ''">
+                and ticket_attach = #{ticketAttach}
+            </if>
+            <if test="scoreFlag != null and scoreFlag != ''">
+                and score_flag = #{scoreFlag}
+            </if>
+            <if test="scoreStartAt != null">
+                and score_start_at = #{scoreStartAt}
+            </if>
+            <if test="scoreEndAt != null">
+                and score_end_at = #{scoreEndAt}
+            </if>
+            <if test="templateCopy != null and templateCopy != ''">
+                and template_copy = #{templateCopy}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                and enterprise_id = #{enterpriseId}
+            </if>
+            <if test="offerStatusShowFlag != null">
+                and offer_status_show_flag = #{offerStatusShowFlag}
+            </if>
+            <if test="delFlag != null">
+                and del_flag = #{delFlag}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createAt != null">
+                and create_at = #{createAt}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateAt != null">
+                and update_at = #{updateAt}
+            </if>
+            <if test="search != null and search != ''">
+                <bind name="searchLike" value="'%' + search + '%'"/>
+                AND (UPPER(`title`) LIKE UPPER(#{searchLike}) or id = #{search})
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='sort == null or sort.trim == ""'>
+                create_at DESC
+            </when>
+            <otherwise>
+                `${sort}`
+                <choose>
+                    <when test='order != null and "DESC".equalsIgnoreCase(order.trim())'>
+                        DESC
+                    </when>
+                    <otherwise>
+                        ASC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryOneById" resultMap="RegisterPublishMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from register_publish
+        where id = #{id} and del_flag =FALSE
+    </select>
+    <select id="queryOneByIdAndEnterpriseId" resultMap="RegisterPublishMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from register_publish
+        where id = #{id} and enterprise_id = #{enterpriseId} and del_flag =FALSE
+    </select>
+
+    <select id="queryAllExcludeStatus" resultMap="RegisterPublishMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from register_publish where status !=#{status} and del_flag =FALSE
+    </select>
+    <select id="queryRegisterByPageAndCondition" resultType="top.gaogle.pojo.dto.UserRegisterDTO">
+        select
+        rp.id, rp.title, rp.status, ru.create_at as createAt
+        from register_user ru
+        left join register_publish rp on rp.id = ru.register_publish_id
+        <where>
+            <if test="title != null and title != ''">
+                and rp.title = #{title}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                and rp.enterprise_id = #{enterpriseId}
+            </if>
+            <!-- 固定条件 -->
+            <if test="true">
+                and rp.del_flag = FALSE
+                and ru.create_by = #{accountBy}
+            </if>
+        </where>
+        order by ru.create_at DESC
+    </select>
+    <select id="queryStatusCount" resultType="top.gaogle.pojo.dto.RegisterPublishStatusCountDTO">
+        SELECT
+        enterprise_id as enterpriseId,
+        COUNT(*) AS count
+        FROM
+        register_publish
+        WHERE
+        status = #{status} and del_flag =FALSE and enterprise_id IN
+        <foreach collection="enterpriseIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        GROUP BY
+        enterprise_id;
+    </select>
+    <select id="queryAllDeleteForUpdate" resultMap="RegisterPublishMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from register_publish
+        where del_flag = TRUE for update
+    </select>
+
+</mapper>

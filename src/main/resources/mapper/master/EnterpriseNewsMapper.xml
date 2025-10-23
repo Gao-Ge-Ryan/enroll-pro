@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.EnterpriseNewsMapper">
+    <resultMap type="top.gaogle.pojo.model.EnterpriseNewsModel" id="EnterpriseNewsMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="fileUrl" column="file_url" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id, title, content, type, enterprise_id, cover, description, file_url, create_by, create_at, update_by, update_at
+    </sql>
+
+
+    <insert id="insert">
+        insert into enterprise_news(<include refid="sqlAllColumns"/>)
+        values
+        (#{id},#{title}, #{content}, #{type}, #{enterpriseId}, #{cover}, #{description}, #{fileUrl}, #{createBy},
+        #{createAt}, #{updateBy}, #{updateAt})
+    </insert>
+    <update id="put">
+        update enterprise_news
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                enterprise_id = #{enterpriseId},
+            </if>
+            <if test="cover != null and cover != ''">
+                cover = #{cover},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="fileUrl != null and fileUrl != ''">
+                file_url = #{fileUrl},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="queryByPageAndCondition" resultMap="EnterpriseNewsMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise_news
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                and enterprise_id = #{enterpriseId}
+            </if>
+            <if test="cover != null and cover != ''">
+                and cover = #{cover}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="fileUrl != null and fileUrl != ''">
+                and file_url = #{fileUrl}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createAt != null">
+                and create_at = #{createAt}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateAt != null">
+                and update_at = #{updateAt}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='sort == null or sort.trim == ""'>
+                create_at DESC
+            </when>
+            <otherwise>
+                `${sort}`
+                <choose>
+                    <when test='order != null and "DESC".equalsIgnoreCase(order.trim())'>
+                        DESC
+                    </when>
+                    <otherwise>
+                        ASC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from enterprise_news
+        where id = #{id}
+    </delete>
+    <delete id="deleteByIdAndEnterpriseId">
+        delete
+        from enterprise_news
+        where id = #{id}
+          and enterprise_id = #{enterpriseId}
+    </delete>
+    <delete id="deleteByEnterpriseId">
+        delete
+        from enterprise_news
+        where enterprise_id = #{enterpriseId}
+    </delete>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EnterpriseNewsMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise_news
+        where id = #{id}
+    </select>
+
+</mapper>

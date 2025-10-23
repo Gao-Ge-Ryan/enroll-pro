@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.InterviewTicketTemplateMapper">
+    <resultMap type="top.gaogle.pojo.model.InterviewTicketTemplateModel" id="InterviewTicketTemplateMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="fieldContent" column="field_content" jdbcType="VARCHAR"/>
+        <result property="textContent" column="text_content" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="range" column="range" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+        <result property="flag" column="flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id
+        ,title,description,field_content,text_content,enterprise_id,`range`,`status`,create_by,create_at,update_by,update_at,flag
+    </sql>
+    <sql id="aliasAqlAllColumns">
+        tt
+        .
+        id
+        ,tt.title,tt.description,tt.field_content,tt.text_content,tt.enterprise_id,tt.range,tt.status,tt.create_by,tt.create_at,tt.update_by,tt.update_at,tt.flag
+    </sql>
+
+    <select id="queryAllByFormTemplateFlag" resultMap="InterviewTicketTemplateMap">
+        select
+        <include refid="aliasAqlAllColumns"/>
+        from interview_ticket_template tt
+        inner join form_ticket ft on tt.flag = ft.ticket_template_flag
+        where ft.form_template_flag = #{formTemplateFlag} and ft.type = 2 and
+        (tt.range =0 or (tt.range =1 and tt.enterprise_id = #{enterpriseId})) and tt.status = 1
+    </select>
+    <select id="queryOneByFlag" resultMap="InterviewTicketTemplateMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from interview_ticket_template
+        where flag = #{flag}
+    </select>
+
+
+</mapper>

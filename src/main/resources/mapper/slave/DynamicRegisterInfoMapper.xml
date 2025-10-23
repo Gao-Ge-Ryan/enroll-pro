@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.slave.DynamicRegisterInfoMapper">
+
+    <resultMap type="top.gaogle.pojo.model.DynamicRegisterInfoModel" id="DynamicRegisterInfoMap">
+        <!-- 基本信息 -->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="idNumber" column="id_number" jdbcType="VARCHAR"/>
+        <result property="admissionTicketNumber" column="admission_ticket_number" jdbcType="VARCHAR"/>
+        <result property="photo" column="photo" jdbcType="VARCHAR"/>
+        <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="VARCHAR"/>
+        <result property="educationLevel" column="education_level" jdbcType="VARCHAR"/>
+        <result property="graduatedUniversity" column="graduated_university" jdbcType="VARCHAR"/>
+        <result property="major" column="major" jdbcType="VARCHAR"/>
+
+        <!-- 考点考场信息 -->
+        <result property="spotId" column="spot_id" jdbcType="VARCHAR"/>
+        <result property="spot" column="spot" jdbcType="VARCHAR"/>
+        <result property="spotAddress" column="spot_address" jdbcType="VARCHAR"/>
+        <result property="roomNumber" column="room_number" jdbcType="VARCHAR"/>
+        <result property="seatNumber" column="seat_number" jdbcType="VARCHAR"/>
+
+        <!-- 成绩与状态 -->
+        <result property="activityCompositeScore" column="activity_composite_score" jdbcType="VARCHAR"/>
+        <result property="score" column="score" jdbcType="DECIMAL"/>
+        <result property="interviewScore" column="interview_score" jdbcType="DECIMAL"/>
+        <result property="finalScore" column="final_score" jdbcType="DECIMAL"/>
+        <result property="interviewFlag" column="interview_flag" jdbcType="BIT"/>
+        <result property="interviewTime" column="interview_time" jdbcType="BIGINT"/>
+        <result property="interviewSpot" column="interview_spot" jdbcType="VARCHAR"/>
+        <result property="interviewSpotAddress" column="interview_spot_address" jdbcType="VARCHAR"/>
+        <result property="offerFlag" column="offer_flag" jdbcType="BIT"/>
+        <result property="offerExplain" column="offer_explain" jdbcType="VARCHAR"/>
+        <result property="ticketDownloadCount" column="ticket_download_count" jdbcType="INTEGER"/>
+        <result property="interviewTicketDownloadCount" column="interview_ticket_download_count" jdbcType="INTEGER"/>
+        <result property="emailSendCount" column="email_send_count" jdbcType="INTEGER"/>
+        <result property="phoneSendCount" column="phone_send_count" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="approve" column="approve" jdbcType="INTEGER"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="jsonExtend" column="json_extend" jdbcType="VARCHAR"/>
+        <result property="frontendJsonExtend" column="frontend_json_extend" jdbcType="VARCHAR"/>
+
+        <!-- 创建与修改信息 -->
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="BIGINT"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="sqlAllColumns">id
+    ,name,id_number,admission_ticket_number,photo,phone_number,email,gender,education_level,graduated_university,major,spot_id,spot,spot_address,room_number,seat_number,activity_composite_score,score,interview_score,final_score,interview_flag,interview_time,interview_spot,interview_spot_address,offer_flag,offer_explain,ticket_download_count,interview_ticket_download_count,email_send_count,phone_send_count,status,approve,reason,json_extend,frontend_json_extend,create_by,create_at,update_by,update_at
+    </sql>
+    <insert id="insertDynamic" parameterType="map">
+        INSERT INTO ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <foreach collection="keys" item="key" separator=",">
+                ${key}
+            </foreach>
+        </trim>
+        <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+            <foreach collection="values" item="value" separator=",">
+                #{value}
+            </foreach>
+        </trim>
+    </insert>
+
+    <delete id="deleteDynamic" parameterType="map">
+        DELETE FROM ${tableName}
+        <where>
+            <foreach collection="conditions" item="condition" separator=" AND ">
+                ${condition.key} = #{condition.value}
+            </foreach>
+        </where>
+    </delete>
+
+    <update id="updateDynamic" parameterType="map">
+        UPDATE ${tableName}
+        <set>
+            <foreach collection="setClauses" item="clause" separator=",">
+                ${clause.key} = #{clause.value}
+            </foreach>
+        </set>
+        <where>
+            <foreach collection="conditions" item="condition" separator=" AND ">
+                ${condition.key} = #{condition.value}
+            </foreach>
+        </where>
+    </update>
+    <update id="createTableDynamic">
+        CREATE TABLE IF NOT EXISTS ${tableName} (
+        id VARCHAR(255) NOT NULL,
+        `name` varchar(255) NULL DEFAULT NULL COMMENT '姓名',
+        `id_number` varchar(255) NULL DEFAULT NULL COMMENT '证件号码',
+        `admission_ticket_number` varchar(255) NULL DEFAULT NULL COMMENT '准考证号',
+        `photo` varchar(255) NULL DEFAULT NULL COMMENT '照片',
+        `phone_number` varchar(255) NULL DEFAULT NULL COMMENT '手机号',
+        `email` varchar(255) NULL DEFAULT NULL COMMENT '邮箱',
+        `gender` varchar(255) NULL DEFAULT NULL COMMENT '性别',
+        `education_level` varchar(255) NULL DEFAULT NULL COMMENT '学历',
+        `graduated_university` varchar(255) NULL DEFAULT NULL COMMENT '毕业院校',
+        `major` varchar(255) NULL DEFAULT NULL COMMENT '专业',
+        <foreach collection="columns" item="column" separator=",">
+            ${column.name} ${column.type}
+            <if test="column.comment != null and column.comment != ''">
+                COMMENT '${column.comment}'
+            </if>
+        </foreach>
+        ,
+        `spot_id` varchar(255) NULL DEFAULT NULL COMMENT '考点id',
+        `spot` varchar(255) NULL DEFAULT NULL COMMENT '考点',
+        `spot_address` varchar(255) NULL DEFAULT NULL COMMENT '考点地址',
+        `room_number` varchar(255) NULL DEFAULT NULL COMMENT '考场号',
+        `seat_number` varchar(255) NULL DEFAULT NULL COMMENT '座号',
+        `activity_composite_score` text NULL DEFAULT NULL COMMENT '每场次笔试汇总成绩',
+        `score` decimal(10, 2) NULL DEFAULT NULL COMMENT '笔试总成绩',
+        `interview_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '面试成绩',
+        `final_score` decimal(10, 2) NULL DEFAULT NULL COMMENT '最终成绩',
+        `interview_flag` bit(1) NULL DEFAULT NULL COMMENT '是否面试标志',
+        `interview_time` bigint NULL DEFAULT NULL COMMENT '面试时间',
+        `interview_spot` varchar(255) NULL DEFAULT NULL COMMENT '面试地点',
+        `interview_spot_address` text NULL DEFAULT NULL COMMENT '面试地点详细地址',
+        `offer_flag` bit(1) NULL DEFAULT NULL COMMENT '是否拟录用标志',
+        `offer_explain` text NULL DEFAULT NULL COMMENT '拟录用说明',
+        `ticket_download_count` int(11) NULL DEFAULT NULL COMMENT '准考证件下载次数',
+        `interview_ticket_download_count` int(11) NULL DEFAULT NULL COMMENT '面试证件下载次数',
+        `email_send_count` int(11) NULL DEFAULT NULL COMMENT '邮件发送次数',
+        `phone_send_count` int(11) NULL DEFAULT NULL COMMENT '手机发送次数',
+        `status` int(11) NULL DEFAULT NULL COMMENT '状态:0初始化,1有效（正式通过）,2无效,3手动处理',
+        `approve` int(11) NULL DEFAULT NULL COMMENT '审核状态:0可编辑状态,1待审核,2审核通过,3审核不通过',
+        `reason` text NULL DEFAULT NULL COMMENT '理由',
+        `json_extend` text NULL DEFAULT NULL COMMENT '后端JSON扩展',
+        `frontend_json_extend` text NULL DEFAULT NULL COMMENT '前端JSON扩展',
+        `create_by` varchar(255) NULL DEFAULT NULL COMMENT '创建者',
+        `create_at` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+        `update_by` varchar(255) NULL DEFAULT NULL COMMENT '修改者',
+        `update_at` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+        PRIMARY KEY (id) USING BTREE
+        )
+    </update>
+    <update id="updateScoreByUnicode">
+        UPDATE ${tableName}
+        set score                    =#{updateScoreDTO.score},
+            activity_composite_score =#{updateScoreDTO.activityCompositeScoreMap},
+            update_by                =#{updateScoreDTO.updateBy},
+            update_at                =#{updateScoreDTO.updateAt}
+        where id = #{updateScoreDTO.registerId}
+          and id_number = #{updateScoreDTO.idNumber}
+          and admission_ticket_number = #{updateScoreDTO.admissionTicketNumber}
+    </update>
+
+    <update id="updateStatusByCreateBy">
+        UPDATE ${tableName}
+        set status=#{status}
+        where create_by = #{createBy}
+    </update>
+
+    <update id="updateStatusById">
+        UPDATE ${tableName}
+        set status=#{status}
+        where id = #{id}
+    </update>
+
+    <update id="updateSpotByCreateBy">
+        UPDATE ${tableName}
+        set spot_id=#{spotDTO.spotId},
+            spot =#{spotDTO.spot},
+            spot_address =#{spotDTO.spotAddress},
+            room_number =#{spotDTO.roomNumber},
+            seat_number =#{spotDTO.seatNumber},
+            admission_ticket_number =#{spotDTO.admissionTicketNumber}
+        where create_by = #{createBy}
+    </update>
+
+    <update id="updateTicketDownloadCount">
+        UPDATE ${tableName}
+        set ticket_download_count = COALESCE(ticket_download_count, 0) + 1
+        where create_by = #{createBy}
+    </update>
+
+    <select id="selectDynamic" resultType="java.util.Map">
+        SELECT
+        <foreach collection="fields" item="field" separator=",">
+            ${field}
+        </foreach>
+        FROM ${tableName}
+        <where>
+            <foreach collection="conditions" item="condition" separator=" AND ">
+                <choose>
+                    <when test="condition.matchType == 'exact'">
+                        ${condition.key} = #{condition.value}
+                    </when>
+                    <when test="condition.matchType == 'like'">
+                        ${condition.key} LIKE CONCAT('%', #{condition.value}, '%')
+                    </when>
+                </choose>
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectDynamicByQueryParam" resultType="java.util.Map">
+        SELECT
+        <foreach collection="fields" item="field" separator=",">
+            ${field}
+        </foreach>
+        FROM ${tableName}
+        <where>
+            <foreach collection="conditions" item="condition" separator=" AND ">
+                <choose>
+                    <when test="condition.matchType == 'exact'">
+                        ${condition.key} = #{condition.value}
+                    </when>
+                    <when test="condition.matchType == 'like'">
+                        ${condition.key} LIKE CONCAT('%', #{condition.value}, '%')
+                    </when>
+                </choose>
+            </foreach>
+            <if test="queryParam.status != null">
+                and status = #{queryParam.status}
+            </if>
+            <if test="queryParam.search != null and queryParam.search != ''">
+                <bind name="searchLike" value="'%' + queryParam.search + '%'"/>
+                AND (UPPER(`name`) LIKE UPPER(#{searchLike}) or UPPER(`create_by`) LIKE UPPER(#{searchLike}))
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='queryParam.sort == null or queryParam.sort.trim == ""'>
+                CASE
+                WHEN status = 1 THEN 0
+                WHEN status = 3 THEN 1
+                WHEN status = 2 THEN 2
+                WHEN status = 0 THEN 3
+                END, create_at ASC
+            </when>
+            <otherwise>
+                `${queryParam.sort}`
+                <choose>
+                    <when test='order != null and "DESC".equalsIgnoreCase(order.trim())'>
+                        DESC
+                    </when>
+                    <otherwise>
+                        ASC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectWithJointDynamic" resultType="java.util.Map">
+        SELECT
+        <foreach collection="fields" item="field" separator=",">
+            ${field}
+        </foreach>
+        FROM ${tableName}
+        left join
+        <where>
+            <foreach collection="conditions" item="condition" separator=" AND ">
+                <choose>
+                    <when test="condition.matchType == 'exact'">
+                        ${condition.key} = #{condition.value}
+                    </when>
+                    <when test="condition.matchType == 'like'">
+                        ${condition.key} LIKE CONCAT('%', #{condition.value}, '%')
+                    </when>
+                </choose>
+            </foreach>
+        </where>
+    </select>
+    <select id="queryModelByCreateBy" resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName}
+        where create_by =#{createBy}
+    </select>
+
+    <select id="queryModelById" resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName}
+        where id =#{id}
+    </select>
+    <select id="selectBaseInfoByRegisterPublishId" resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName}
+    </select>
+    <select id="queryValidCountByStatus" resultType="java.lang.Integer">
+        select IFNULL(COUNT(*), 0)
+        from ${tableName}
+        where status = #{status}
+    </select>
+    <select id="queryScoreByCreateBy" resultMap="DynamicRegisterInfoMap">
+        select score, activityCompositeScore
+        from ${tableName}
+        where create_by = #{createBy}
+    </select>
+
+    <select id="queryCreateBysByIdAndStatus" resultType="java.lang.String">
+        select create_by
+        from ${tableName}
+        where status = #{status}
+        ORDER BY create_at ASC
+    </select>
+
+    <select id="queryCreateBysByIdAndStatusForAllocateSpot" resultType="java.lang.String">
+        select create_by
+        from ${tableName}
+        where status = #{status}
+        ORDER BY ${sortOrder}
+    </select>
+
+    <select id="queryBaseInfoByRegisterPublishIdAndStatus"
+            resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName}
+        where status =#{status}
+        order by admission_ticket_number asc
+    </select>
+
+    <select id="queryBaseInfoByRoomQuantity" resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName} where room_number=#{roomQuantity} ORDER BY seat_number ASC
+    </select>
+    <select id="statisticsRoomSeatCount" resultType="top.gaogle.pojo.dto.StatisticsRoomSeatCountDTO">
+        SELECT spot_id                     AS spotId,
+               COUNT(DISTINCT room_number) AS roomCount,
+               COUNT(seat_number)          AS seatCount
+        FROM ${tableName}
+        WHERE spot_id IS NOT NULL
+        GROUP BY spot_id;
+    </select>
+    <select id="queryRoomByRegisterPublishIdAndSpotId" resultType="java.lang.String">
+        SELECT DISTINCT room_number
+        FROM ${tableName}
+        WHERE spot_id = #{spotId}
+        ORDER BY room_number ASC;
+
+    </select>
+    <select id="querySeatInfoByRegisterPublishIdAndSpotId" resultType="top.gaogle.pojo.dto.SeatInfoDTO">
+        select spot_id                 as spotId,
+               spot                    as spot,
+               spot_address            as spotAddress,
+               room_number             as roomNumber,
+               seat_number             as seatNumber,
+               name                    as name,
+               admission_ticket_number as admissionTicketNumber,
+               create_by               as createBy,
+               id_number               as idNumber
+        from ${tableName}
+        where spot_id = #{spotId}
+          and room_number = #{roomNumber}
+        ORDER BY admission_ticket_number ASC;
+    </select>
+    <select id="querySignInInfoDTO" resultType="top.gaogle.pojo.dto.SignInInfoDTO">
+        select seat_number             as seatNumber,
+               name                    as name,
+               admission_ticket_number as admissionTicketNumber,
+               id_number               as idNumber,
+               photo                   as photo
+        from ${tableName}
+        where spot_id = #{spotId}
+          and room_number = #{room}
+        ORDER BY admission_ticket_number ASC;
+    </select>
+    <select id="queryBaseInfoByRegisterPublishIdAndStatusAndInterviewFlag"
+            resultMap="DynamicRegisterInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from ${tableName}
+        where status =#{status} and interview_flag = #{interviewFlag}
+        order by admission_ticket_number asc
+    </select>
+    <select id="queryBaseInfoByOfferFlagAndStatus" resultMap="DynamicRegisterInfoMap">
+        select id,
+               id_number,
+               name,
+               offer_flag,
+               offer_explain,
+               status,
+               score,
+               interview_score,
+               final_score
+        from ${tableName}
+        where offer_flag = #{offerFlag}
+          and status = #{status}
+        <if test="search != null and search != ''">
+            <bind name="searchLike" value="'%' + search + '%'"/>
+            AND (UPPER(`name`) LIKE UPPER(#{searchLike}))
+        </if>
+        ORDER BY ${sortOrder}
+    </select>
+    <update id="dropTableDynamic">
+        DROP TABLE IF EXISTS ${tableName}
+    </update>
+    <update id="updateInterviewInfoByUnicode">
+        UPDATE ${tableName}
+        set interview_flag         =#{updateInterviewInfoDTO.interviewFlag},
+            interview_time         =#{updateInterviewInfoDTO.interviewTime},
+            interview_spot         =#{updateInterviewInfoDTO.interviewSpot},
+            interview_spot_address =#{updateInterviewInfoDTO.interviewSpotAddress},
+            update_by              =#{updateInterviewInfoDTO.updateBy},
+            update_at              =#{updateInterviewInfoDTO.updateAt}
+        where id = #{updateInterviewInfoDTO.registerId}
+          and id_number = #{updateInterviewInfoDTO.idNumber}
+    </update>
+    <update id="updateInterviewScoreByUnicode">
+        UPDATE ${tableName}
+        set interview_score = #{interviewScore},
+            update_by       = #{updateBy},
+            update_at       = #{updateAt}
+        where id = #{id}
+          and id_number = #{idNumber}
+    </update>
+    <update id="updateFinalScoreByUnicode">
+        UPDATE ${tableName}
+        set final_score =#{updateFinalScoreDTO.finalScore},
+            update_by   =#{updateFinalScoreDTO.updateBy},
+            update_at   =#{updateFinalScoreDTO.updateAt}
+        where id = #{updateFinalScoreDTO.id}
+    </update>
+    <update id="updateOfferByUnicode">
+        UPDATE ${tableName}
+        set offer_flag    = #{offerFlag},
+            offer_explain = #{offerExplain},
+            update_by     = #{updateBy},
+            update_at     = #{updateAt}
+        where id = #{id}
+          and id_number = #{idNumber}
+    </update>
+    <update id="updateInterviewTicketDownloadCount">
+        UPDATE ${tableName}
+        set interview_ticket_download_count = COALESCE(interview_ticket_download_count, 0) + 1
+        where create_by = #{createBy}
+    </update>
+
+
+</mapper>

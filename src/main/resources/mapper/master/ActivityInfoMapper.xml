@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.ActivityInfoMapper">
+    <resultMap type="top.gaogle.pojo.model.ActivityInfoModel" id="ActivityInfoMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="scoreProportion" column="score_proportion" jdbcType="DECIMAL"/>
+        <result property="activityStartAt" column="activity_start_at" jdbcType="INTEGER"/>
+        <result property="activityEndAt" column="activity_end_at" jdbcType="INTEGER"/>
+        <result property="registerPublishId" column="register_publish_id" jdbcType="VARCHAR"/>
+        <result property="subject" column="subject" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id
+        , score_proportion,activity_start_at,activity_end_at,register_publish_id,subject,create_by,create_at,update_by,update_at
+    </sql>
+    <insert id="insert">
+        insert into activity_info(<include refid="sqlAllColumns"/>)
+        values
+        (#{id},#{scoreProportion},#{activityStartAt},#{activityEndAt},#{registerPublishId},#{subject},#{createBy},#{createAt},#{updateBy},#{updateAt})
+    </insert>
+    <update id="enterpriseUpdate">
+        update activity_info
+        <set>
+            <if test="activityStartAt != null">
+                activity_start_at = #{activityStartAt},
+            </if>
+            <if test="scoreProportion != null">
+                score_proportion = #{scoreProportion},
+            </if>
+            <if test="activityEndAt != null">
+                activity_end_at = #{activityEndAt},
+            </if>
+            <if test="subject != null and subject != ''">
+                subject = #{subject},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteByRegisterPublishId">
+        delete from activity_info
+        where register_publish_id = #{registerPublishId}
+    </delete>
+
+    <select id="queryByRegisterPublishId" resultMap="ActivityInfoMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from activity_info
+        where register_publish_id = #{registerPublishId}
+        order by activity_start_at asc
+    </select>
+
+
+</mapper>

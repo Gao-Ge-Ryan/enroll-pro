@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>签到表</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 20px;
+        }
+
+        html, body {
+            font-family: 'simsun', serif;
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(10, auto);
+            gap: 10px;
+            page-break-after: always;
+        }
+        .block {
+            width: 100%;
+            height: 160px; /* 确保每个格子高度一致，适应 A4 页面 */
+            border: 1px solid #000;
+            padding: 5px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .photo img {
+            width: 80px;
+            height: 100px;
+            border: 1px solid #000;
+            margin-bottom: 5px;
+        }
+        .info {
+            font-size: 10px;
+            text-align: left;
+        }
+        .sign {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .sign div {
+            flex: 1;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+        .sign div::after {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 1px;
+            background: black;
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 计算总页数，每页 30 条 -->
+<div th:each="pageStart : ${#numbers.sequence(0, signInInfos.size() - 1, 30)}">
+    <div class="container">
+        <!-- 计算当前页的 30 条数据 -->
+        <div class="block" th:each="signInInfo, iterStat : ${signInInfos.subList(pageStart, pageStart + 30 > signInInfos.size() ? signInInfos.size() : pageStart + 30)}">
+            <div class="photo">
+                <img th:src="${signInInfo.photo}" alt="照片"/>
+            </div>
+            <div class="info">
+                <p><strong>准考证号:</strong> <span th:text="${signInInfo.admissionTicketNumber}"></span></p>
+                <p><strong>身份证号:</strong> <span th:text="${signInInfo.idNumber}"></span></p>
+                <p><strong>考场号:</strong> <span th:text="${signInInfo.roomNumber}"></span></p>
+                <p><strong>座位号:</strong> <span th:text="${signInInfo.seatNumber}"></span></p>
+                <p><strong>签到:</strong> <span>_____________</span></p>
+                <p><strong>签离:</strong> <span>_____________</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

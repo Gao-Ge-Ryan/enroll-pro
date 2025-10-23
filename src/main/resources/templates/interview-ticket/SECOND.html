@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>部门-岗位准考证</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'simsun', serif;
+            margin: 0;
+            padding: 20px 40px;
+            box-sizing: border-box;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+        }
+
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .main-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 16px;
+            vertical-align: top;
+        }
+
+        .label-cell {
+
+            font-weight: bold;
+            width: 100px;
+            text-align: center;
+        }
+
+        .photo-cell {
+            width: 120px;
+            height: 160px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .photo {
+            width: 100px;
+            height: 130px;
+            border: 1px solid #000;
+        }
+
+        .exam-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .exam-table th,
+        .exam-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .exam-table th {
+
+            font-weight: bold;
+        }
+
+        .exam-number {
+            float: right;
+            font-size: 16px;
+            margin-top: -40px;
+            margin-right: 20px;
+        }
+
+        .notice {
+            font-size: 12px;
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        .notice h3 {
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .notice p {
+            margin: 8px 0;
+            text-indent: 2em;
+        }
+    </style>
+</head>
+
+<body>
+<div class="title"><span th:text="${registerPublishTitle}"></span></div>
+<div class="subtitle">准 考 证</div>
+
+<table class="main-table">
+    <tr>
+        <td class="label-cell">姓名：</td>
+        <td><span th:text="${name}"></span></td>
+        <td class="photo-cell" rowspan="4">
+            <img class="photo" th:src="${photoUrl}" alt="证件照" />
+        </td>
+    </tr>
+    <tr>
+        <td class="label-cell">性别：</td>
+        <td><span th:text="${gender}"></span></td>
+        <td class="label-cell">身份证号：</td>
+        <td><span th:text="${idNumber}"></span></td>
+    </tr>
+    <tr>
+        <td class="label-cell">报考单位/部门：</td>
+        <td colspan="3"><span th:text="${projectTeam}"></span></td>
+    </tr>
+    <tr>
+        <td class="label-cell">报考职位：</td>
+        <td colspan="3"><span th:text="${positionAppliedFor}"></span></td>
+    </tr>
+    <tr>
+        <td class="label-cell">面试地点：</td>
+        <td colspan="4"><span th:text="${interviewSpot}"></span>（<span th:text="${interviewSpotAddress}"></span>）</td>
+    </tr>
+    <tr>
+        <td class="label-cell">面试时间：</td>
+        <td><span th:text="${interviewTime}"></span></td>
+    </tr>
+</table>
+
+
+<div class="notice">
+    <h3>面试须知</h3>
+    <div th:utext="${noticeHtml}"></div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>基础信息准考证</title>
+    <style>
+        @page {
+            size: A4 portrait;
+            /* 改为A4竖向 */
+            margin: 20px;
+            /* 添加适当页边距 */
+        }
+
+        html,
+        body {
+            font-family: 'simsun', serif;
+            /* height: 100%; */
+            margin: 0;
+            padding: 0;
+        }
+
+        #content {
+            width: 100%;
+            max-width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .photo-wrapper {
+            position: absolute;
+            top: 100px;
+            right: 0;
+            margin: 0;
+        }
+
+        .photo-wrapper .photo {
+            width: 80px;
+            height: 110px;
+            border: 1px solid #555;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section p {
+            margin: 6px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .exam-table {
+            page-break-inside: avoid;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .exam-table th,
+        .exam-table td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: center;
+            word-wrap: break-word;
+        }
+
+        .exam-table th {
+            font-weight: bold;
+        }
+
+        .notice-section {
+            /* margin-top: 16px; */
+            /* border: 1px solid #555; */
+            padding: 20px;
+        }
+
+        .notice-section h2 {
+            text-align: center;
+            margin: 0px;
+
+        }
+
+        .notice-section p {
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+
+        strong {
+            color: #333;
+        }
+
+        span {
+            color: #000;
+        }
+
+        .line-spacing {
+            line-height: 1.2;
+        }
+    </style>
+</head>
+
+<body>
+<div id="content">
+    <!-- 标题和照片 -->
+    <div class="header">
+        <h2><span th:text="${registerPublishTitle}+准考证"></span></h2>
+        <!-- 照片 -->
+        <div class="photo-wrapper">
+            <img class="photo" th:src="${photoUrl}" alt="证件照" />
+        </div>
+    </div>
+
+    <!-- 基本信息 -->
+    <div class="info-section">
+        <p class="line-spacing"><strong>姓名:</strong> <span th:text="${name}"></span></p>
+        <p class="line-spacing"><strong>准考证号:</strong> <span th:text="${admissionTicketNumber}"></span></p>
+        <p class="line-spacing"><strong>证件号码:</strong> <span th:text="${idNumber}"></span></p>
+        <p class="line-spacing"><strong>考点:</strong> <span th:text="${spot}"></span></p>
+        <p class="line-spacing"><strong>考场号:</strong> <span th:text="${roomNumber}"></span></p>
+        <p class="line-spacing"><strong>座位号:</strong> <span th:text="${seatNumber}"></span></p>
+        <p class="line-spacing"><strong>考点地址:</strong> <span th:text="${spotAddress}"></span></p>
+    </div>
+
+    <!-- 考试科目信息表格 -->
+    <div class="info-section" style="margin-bottom: 0px;">
+        <h3 style="text-align: center; margin-bottom: 15px;">考试科目信息</h3>
+        <table class="exam-table">
+            <tr>
+                <th>考试科目</th>
+                <th>考试日期</th>
+                <th>考试时间</th>
+            </tr>
+            <tr th:each="activity : ${activityInfoDTOS}">
+                <td th:text="${activity.subject}"></td>
+                <td th:text="${activity.date}"></td>
+                <td th:text="${activity.time}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 应试人员须知 -->
+    <div class="notice-section">
+        <h2>应试人员须知</h2>
+        <div th:utext="${noticeHtml}"></div>
+    </div>
+</div>
+</body>
+
+</html>

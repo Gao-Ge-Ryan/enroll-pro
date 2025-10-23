@@ -1,0 +1,170 @@
+# 本地运行后端服务使用的配置文件
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    druid:
+      # 系统库数据源
+      master:
+        url: jdbc:mysql://${DB_HOST:39.98.48.234}:${DB_PORT:3306}/${DB:enroll_pro}?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: ${DB_USER:root}
+        password: ${DB_PWD:ePFOn7gH6Bp2SOhKIH2V7VHChlYiMGsnUmn1uSZ3Md9z/HJBJf40DDwowIE5tNysihA01q4NB76G+z07aovdUQ==}
+      # 动态表库数据源
+      slave:
+        # 从数据源开关/默认关闭
+        enabled: true
+        url: jdbc:mysql://${DB_HOST:39.98.48.234}:${DB_PORT:3306}/${DB_SLAVE:enroll_pro_slave}?useSSL=false&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: ${DB_USER:root}
+        password: ${DB_PWD:ePFOn7gH6Bp2SOhKIH2V7VHChlYiMGsnUmn1uSZ3Md9z/HJBJf40DDwowIE5tNysihA01q4NB76G+z07aovdUQ==}
+      # 初始连接数
+      initialSize: 5
+      # 最小连接池数量
+      minIdle: 10
+      # 最大连接池数量
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置连接超时时间
+      connectTimeout: 30000
+      # 配置网络超时时间
+      socketTimeout: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 配置一个连接在池中最大生存的时间，单位是毫秒
+      maxEvictableIdleTimeMillis: 900000
+      # 配置检测连接是否有效
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      connectProperties: config.decrypt=true;config.decrypt.key=${DB_DECRYPT:MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALHwESUrxpFmQYzGwRqn2xpW79LC/MpDArc72qwPA2nSenkdkTrpf+MQtXnUJ+z1Tac1WYtZNFB45FBebtQdFRECAwEAAQ==}
+      webStatFilter:
+        enabled: true
+      statViewServlet:
+        enabled: false
+        # 设置白名单，不填则允许所有访问
+        allow:
+        url-pattern: /druid/*
+        # 控制台管理用户名和密码
+        login-username: gaogle
+        login-password: gaogle
+      filter:
+        config:
+          # 是否配置加密
+          enabled: true
+        stat:
+          enabled: true
+          # 慢SQL记录
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+        wall:
+          config:
+            multi-statement-allow: true
+  redis:
+    host: ${REDIS_HOST:39.98.48.234}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PWD:Redis123}
+    database: ${REDIS_DB:0}
+  # 文件上传
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 500MB
+      # 设置总上传的文件大小
+      max-request-size: 500MB
+  mail:
+    # 配置 SMTP 服务器地址
+    host: smtp.qq.com
+    # 发送者邮箱
+    username: 3300755918@qq.com
+    password: gioseloakopgcjid
+    # 端口号465或587
+    port: 587
+    # 默认的邮件编码为UTF-8
+    default-encoding: UTF-8
+    # 配置SSL 加密工厂
+    properties: # 设置邮件超时时间防止服务器阻塞
+      timeout: 5000
+      connection-timeout: 5000
+      write-timeout: 5000
+      mail:
+        smtp:
+          starttls:
+            required: true
+            enable: true
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+        #表示开启 DEBUG 模式，这样，邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+server:
+  port: 8080
+#  servlet:
+#    # 应用的访问路径
+#    context-path: /gaogle
+
+mybatis:
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
+gaogle:
+  beianNumber: 2025153913
+  beianName: 鲁ICP备2025153913号
+  gonganBeianNumber: 37011202002397
+  gonganBeianName: 鲁公网安备37011202002397号
+  adminBrowserTitle: 管理端
+  clientBrowserTitle: 用户端
+  enterpriseBrowserTitle: 企业端
+  iconUrl: https://www.enrollpro.top/static/img/logo.png
+  clientUrl: https://www.enrollpro.top
+  enterpriseUrl: https://enterprise.enrollpro.top
+  adminUrl: https://admin.enrollpro.top
+  systemName: Enroll Pro
+  keystorePath: /opt/conf
+  alipayStorePass: gaogle
+  passAES: Gaogle
+  projectSignTime: Wpwm2zxT5VZ50Dvop+WqcaC/iasvi+JpFGE8aVaaCmj8QdRhd2QzY94IhV7JX5QID53RnFT3BXfE9yGWfOhq8Z4Wa/yl/w2jGe8khzsS5lgqR04hQgbVCSpYKicE1AoTEM5zyjXElfb3OesrVgkUam8uaw9Sk9l281BfieUrf44vfSXRbs3Iv79ciF4v/w4VC89x2V+mL4XxvZpcJi0+mcoKYN+5IhTg4GvPbK629739By1kEz4wnM/dLgrjLWcv8Nub/IVqN1HcSVNCgj+pzBFYc0BgtEUVYKxVooJl62JIGA9G5rY6fj2TwWxzbT8U24LuZKAuDFh3JbsNyj+MvA==G@Gle1761735271130
+  author: gaogle 高歌 , QQ：3300755918
+  # 获取ip地址开关
+  addressEnabled: true
+  # 注册发布费用
+  registerPublishCostEnabled: true
+  # 启用手机号
+  phoneEnabled: true
+  adminEmail: 3300755918@qq.com
+minio:
+  endpoint: http://${MINIO_HOST:39.98.48.234}
+  port: ${MINIO_PORT:9001}
+  access-key: ${MINIO_USER:minio}
+  secret-key: ${MINIO_PWD:Minio123}
+  secure: false
+  bucket-name-public: style-register-public
+  bucket-name-private: style-register-private
+  image-size: 1048576000
+  file-size: 1073741824
+  picture-url: http://${MINIO_HOST:39.98.48.234}:${MINIO_PORT:9001}/style-register-public/picture/
+  file-url: http://${MINIO_HOST:39.98.48.234}:${MINIO_PORT:9001}/style-register-public/file/
+alipay:
+  # 支付宝网关地址
+  openApiDomain: https://openapi-sandbox.dl.alipaydev.com/gateway.do
+  # 支付宝网关名、partnerId和appId
+  appId: 9021000136693302
+  # RSA私钥、公钥和支付宝公钥
+  #此处请填写你的应用私钥且转PKCS8格式
+  privateKey:
+  #SHA256withRsa对应支付宝公钥
+  alipayPublicKey:
+  # 签名类型: RSA->SHA1withRsa,RSA2->SHA256withRsa
+  signType: RSA2
+  salt:
+  #异步通知url(注意拦截器是否拦截)
+  notifyUrl: ${gaogle.clientUrl}/gaogle/alipay/notify_url
+  returnUrl: ${gaogle.clientUrl}/gaogle/alipay/return_url
+  frontendUrl: ${gaogle.enterpriseUrl}/exam
+  enterpriseNotifyUrl: ${gaogle.clientUrl}/gaogle/alipay/enterprise_notify_url
+  enterpriseReturnUrl: ${gaogle.clientUrl}/gaogle/alipay/enterprise_return_url
+  enterpriseFrontendUrl: ${gaogle.enterpriseUrl}/billing/list
+  clientNotifyUrl: ${gaogle.clientUrl}/gaogle/alipay/client_notify_url
+  clientReturnUrl: ${gaogle.clientUrl}/alipay/client_return_url
+  clientFrontendUrl: ${gaogle.clientUrl}/exam/#{enterpriseId}/#{registerPublishId}?type=apply

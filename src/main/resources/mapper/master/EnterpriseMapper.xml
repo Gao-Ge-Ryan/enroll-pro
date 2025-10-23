@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.EnterpriseMapper">
+    <resultMap type="top.gaogle.pojo.model.EnterpriseModel" id="EnterpriseMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="logo" column="logo" jdbcType="VARCHAR"/>
+        <result property="reason" column="reason" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="showStatus" column="show_status" jdbcType="INTEGER"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="creditCode" column="credit_code" jdbcType="VARCHAR"/>
+        <result property="balance" column="balance" jdbcType="INTEGER"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+        <result property="slideshow" column="slideshow" jdbcType="VARCHAR"/>
+        <result property="contactEmail" column="contact_email" jdbcType="VARCHAR"/>
+        <result property="contactPhone" column="contact_phone" jdbcType="VARCHAR"/>
+        <result property="workTime" column="work_time" jdbcType="VARCHAR"/>
+        <result property="workAddress" column="work_address" jdbcType="VARCHAR"/>
+        <result property="applyPhone" column="apply_phone" jdbcType="VARCHAR"/>
+        <result property="culturePhilosophyFlag" column="culture_philosophy_flag" jdbcType="VARCHAR"/>
+        <result property="culturePhilosophy" column="culture_philosophy" jdbcType="VARCHAR"/>
+        <result property="partnerFlag" column="partner_flag" jdbcType="VARCHAR"/>
+        <result property="subscribeWechat" column="subscribe_wechat" jdbcType="VARCHAR"/>
+        <result property="serveFlag" column="serve_flag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap type="top.gaogle.pojo.model.EnterpriseUserModel" id="EnterpriseUserMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="accountBy" column="account_by" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap type="top.gaogle.pojo.model.AlipaySecretModel" id="AlipaySecretMap">
+        <result property="alipayAppId" column="alipay_app_id" jdbcType="VARCHAR"/>
+        <result property="alipayPrivateKey" column="alipay_private_key" jdbcType="VARCHAR"/>
+        <result property="alipayAlipayPublicKey" column="alipay_alipay_public_key" jdbcType="VARCHAR"/>
+        <result property="alipaySignType" column="alipay_sign_type" jdbcType="INTEGER"/>
+        <result property="alipaySalt" column="alipay_salt" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id, name, logo,slideshow,contact_email,contact_phone,work_time,work_address,apply_phone,culture_philosophy_flag,culture_philosophy,partner_flag,subscribe_wechat,serve_flag,reason,status, show_status,description, credit_code, balance, create_by, create_at, update_by, update_at
+    </sql>
+
+    <sql id="enterpriseUserSqlAllColumns">
+        id,enterprise_id,account_by, create_by, create_at, update_by, update_at
+    </sql>
+
+    <sql id="alipaySecretSqlAllColumns">
+        alipay_app_id,alipay_private_key,alipay_alipay_public_key, alipay_sign_type, alipay_salt
+    </sql>
+
+    <insert id="insert">
+        insert into enterprise(<include refid="sqlAllColumns"/>)
+        values
+        (#{id},#{name},#{logo},#{slideshow},#{contactEmail},#{contactPhone},#{workTime},#{workAddress},#{applyPhone},#{culturePhilosophyFlag},#{culturePhilosophy},#{partnerFlag},#{subscribeWechat},#{serveFlag},#{reason},
+        #{status},#{showStatus},
+        #{description}, #{creditCode}, #{balance},
+        #{createBy}, #{createAt},
+        #{updateBy}, #{updateAt})
+    </insert>
+    <insert id="insertUser">
+        insert into enterprise_user(<include refid="enterpriseUserSqlAllColumns"/>)
+        values (#{id},#{enterpriseId},#{accountBy},
+        #{createBy}, #{createAt},
+        #{updateBy}, #{updateAt})
+    </insert>
+    <update id="putEnterprise">
+        update enterprise
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="logo != null and logo != ''">
+                logo = #{logo},
+            </if>
+            <if test="slideshow != null and slideshow != ''">
+                slideshow = #{slideshow},
+            </if>
+            <if test="reason != null and reason != ''">
+                reason = #{reason},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                credit_code = #{creditCode},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="enterprisePutEnterprise">
+        update enterprise
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="logo != null and logo != ''">
+                logo = #{logo},
+            </if>
+            <if test="slideshow != null and slideshow != ''">
+                slideshow = #{slideshow},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="contactEmail != null and contactEmail != ''">
+                contact_email = #{contactEmail},
+            </if>
+            <if test="contactPhone != null and contactPhone != ''">
+                contact_phone = #{contactPhone},
+            </if>
+            <if test="workTime != null and workTime != ''">
+                work_time = #{workTime},
+            </if>
+            <if test="workAddress != null and workAddress != ''">
+                work_address = #{workAddress},
+            </if>
+            <if test="culturePhilosophyFlag != null">
+                culture_philosophy_flag = #{culturePhilosophyFlag},
+            </if>
+            <if test="culturePhilosophy != null and culturePhilosophy != ''">
+                culture_philosophy = #{culturePhilosophy},
+            </if>
+            <if test="partnerFlag != null">
+                partner_flag = #{partnerFlag},
+            </if>
+            <if test="subscribeWechat != null and subscribeWechat != ''">
+                subscribe_wechat = #{subscribeWechat},
+            </if>
+            <if test="serveFlag != null">
+                serve_flag = #{serveFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateBalanceById">
+        update enterprise
+        set balance = #{lastBalance}
+        where id = #{enterpriseId}
+    </update>
+    <update id="putEnterpriseAlipaySecret">
+        update enterprise
+        set alipay_app_id            = #{alipayAppId},
+            alipay_private_key       = #{alipayPrivateKey},
+            alipay_alipay_public_key = #{alipayAlipayPublicKey},
+            alipay_sign_type         = #{alipaySignType},
+            alipay_salt              = #{alipaySalt}
+        where id = #{enterpriseId}
+    </update>
+    <update id="updateStatusAndReasonById">
+        update enterprise
+        set status = #{status},
+            reason = #{reason}
+        where id = #{enterpriseId}
+    </update>
+    <update id="approveInfoUpdate">
+        update enterprise
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="applyPhone != null and applyPhone != ''">
+                apply_phone = #{applyPhone},
+            </if>
+            <if test="logo != null and logo != ''">
+                logo = #{logo},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{enterpriseId}
+    </update>
+    <update id="updateShowStatusById">
+        update enterprise
+        set show_status = #{showStatus}
+        where id = #{enterpriseId}
+    </update>
+    <delete id="deleteById">
+        delete
+        from enterprise
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteUserByAccountBy">
+        delete
+        from enterprise_user
+        where account_by = #{accountBy}
+    </delete>
+
+    <select id="queryByPageAndCondition" resultMap="EnterpriseMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                and credit_code = #{creditCode}
+            </if>
+            <if test="balance != null">
+                and balance = #{balance}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createAt != null">
+                and create_at = #{createAt}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateAt != null">
+                and update_at = #{updateAt}
+            </if>
+            <if test="search != null and search != ''">
+                <bind name="searchLike" value="'%' + search.toUpperCase() + '%'"/>
+                AND UPPER(name) LIKE #{searchLike}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='sort == null or sort.trim == ""'>
+                create_at DESC
+            </when>
+            <otherwise>
+                `${sort}`
+                <choose>
+                    <when test='order != null and "DESC".equalsIgnoreCase(order.trim())'>
+                        DESC
+                    </when>
+                    <otherwise>
+                        ASC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryOneById" resultMap="EnterpriseMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise
+        where id = #{id}
+    </select>
+    <select id="queryAllByAndCondition" resultMap="EnterpriseMap">
+        select
+        id, name, logo
+        from enterprise
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="creditCode != null and creditCode != ''">
+                and credit_code = #{creditCode}
+            </if>
+            <if test="balance != null">
+                and balance = #{balance}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createAt != null">
+                and create_at = #{createAt}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateAt != null">
+                and update_at = #{updateAt}
+            </if>
+            <if test="search != null and search != ''">
+                <bind name="searchLike" value="'%' + search.toUpperCase() + '%'"/>
+                AND UPPER(name) LIKE #{searchLike}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='sort == null or sort.trim == ""'>
+                create_at DESC
+            </when>
+            <otherwise>
+                `${sort}`
+                <choose>
+                    <when test='order != null and "DESC".equalsIgnoreCase(order.trim())'>
+                        DESC
+                    </when>
+                    <otherwise>
+                        ASC
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+    </select>
+    <select id="queryByCreateBy" resultMap="EnterpriseMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise where create_by = #{createBy}
+    </select>
+    <select id="queryByAccountBy" resultMap="EnterpriseMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM
+        enterprise
+        WHERE id IN (
+        SELECT enterprise_id FROM enterprise_user WHERE account_by = #{accountBy}
+        UNION
+        SELECT id FROM enterprise WHERE create_by = #{accountBy}
+        )
+    </select>
+    <select id="clientQueryByPage" resultMap="EnterpriseMap">
+        select id,
+        name,
+        description,
+        logo
+        from enterprise
+        where status = 2 and show_status = 1
+        <if test="search != null and search != ''">
+            <bind name="searchLike" value="'%' + search.toUpperCase() + '%'"/>
+            AND UPPER(name) LIKE #{searchLike}
+        </if>
+    </select>
+    <select id="clientQueryEnterprise" resultMap="EnterpriseMap">
+        select id,
+               name,
+               description,
+               logo,
+               slideshow,
+               contact_email,
+               contact_phone,
+               work_time,
+               work_address,
+               culture_philosophy,
+               subscribe_wechat
+
+        from enterprise
+        where id = #{enterpriseId}
+    </select>
+    <select id="queryBalanceById" resultType="java.lang.Long">
+        select IFNULL(balance, 0)
+        from enterprise
+        where id = #{enterpriseId} for
+        update
+    </select>
+
+    <select id="queryUserByEnterpriseId" resultMap="EnterpriseUserMap">
+        select
+        <include refid="enterpriseUserSqlAllColumns"/>
+        from enterprise_user where enterprise_id = #{enterpriseId}
+    </select>
+
+    <select id="queryUserByAccountBy" resultMap="EnterpriseUserMap">
+        select
+        <include refid="enterpriseUserSqlAllColumns"/>
+        from enterprise_user where account_by = #{accountBy}
+    </select>
+
+    <select id="queryAlipaySecretByEnterpriseId" resultMap="AlipaySecretMap">
+        select
+        <include refid="alipaySecretSqlAllColumns"/>
+        from enterprise where id = #{enterpriseId}
+    </select>
+
+    <select id="queryByAccountByAndStatus" resultMap="EnterpriseMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM
+        enterprise
+        WHERE id IN (
+        SELECT enterprise_id FROM enterprise_user WHERE account_by = #{accountBy}
+        UNION
+        SELECT id FROM enterprise WHERE create_by = #{accountBy} and status =#{status}
+        )
+    </select>
+    <select id="queryAccountByByEnterpriseId" resultType="java.lang.String">
+        select account_by
+        from enterprise_user where enterprise_id = #{enterpriseId}
+    </select>
+
+</mapper>

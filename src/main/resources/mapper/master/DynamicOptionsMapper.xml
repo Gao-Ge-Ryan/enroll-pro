@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.DynamicOptionsMapper">
+    <resultMap type="top.gaogle.pojo.model.DynamicOptionsModel" id="DynamicOptionsMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="pid" column="pid" jdbcType="VARCHAR"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="registerPublishId" column="register_publish_id" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id
+        ,name,pid,enterprise_id,status,type,register_publish_id,description,create_by,create_at,update_by,update_at
+    </sql>
+    <insert id="insert">
+        insert into dynamic_options (<include refid="sqlAllColumns"/>)
+        values
+        (#{id},#{name},#{pid},#{enterpriseId},#{status},#{type},#{registerPublishId},#{description},#{createBy},#{createAt},#{updateBy},#{updateAt})
+    </insert>
+    <update id="put">
+        update dynamic_options
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="pid != null and pid != ''">
+                pid = #{pid},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete
+        from dynamic_options
+        where id = #{id}
+    </delete>
+    <select id="queryOneById" resultMap="DynamicOptionsMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from dynamic_options
+        where id = #{id}
+    </select>
+    <select id="queryIdsByPid" resultType="java.lang.String">
+        select id
+        from dynamic_options
+        where pid = #{pid}
+    </select>
+    <select id="queryAllByPidAndEnterpriseId" resultMap="DynamicOptionsMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM dynamic_options
+        <where>
+            <if test="pid != null and pid != ''">
+                AND pid = #{pid}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                AND enterprise_id = #{enterpriseId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="registerPublishId != null and registerPublishId != ''">
+                AND register_publish_id = #{registerPublishId}
+            </if>
+
+        </where>
+    </select>
+    <select id="queryAllByType" resultMap="DynamicOptionsMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM dynamic_options
+        <where>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                AND enterprise_id = #{enterpriseId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+    </select>
+    <select id="clientQueryAllByPidAndEnterpriseId" resultMap="DynamicOptionsMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM dynamic_options
+        <where>
+            <if test="pid != null and pid != ''">
+                AND pid = #{pid}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                AND enterprise_id = #{enterpriseId}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+        </where>
+    </select>
+    <select id="queryByCondition" resultMap="DynamicOptionsMap">
+        SELECT
+        <include refid="sqlAllColumns"/>
+        FROM dynamic_options
+        <where>
+            <if test="pid != null and pid != ''">
+                AND pid = #{pid}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                AND enterprise_id = #{enterpriseId}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="registerPublishId != null and registerPublishId != ''">
+                AND register_publish_id = #{registerPublishId}
+            </if>
+            <if test="description != null and description != ''">
+                AND description = #{description}
+            </if>
+        </where>
+    </select>
+
+</mapper>

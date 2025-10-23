@@ -1,57 +1,49 @@
-# Compiled class file
+# ide
+.classpath
+.project
+.settings
+.metadata
+.recommenders
+RemoteSystemsTempFiles
+Servers
+eclipsebin
+.idea
+.fleet
+*.iml
+*.ipr
+*.iws
+.git
+
+# build
+classes
 *.class
+target
+*/target
+pom.xml.*
+out/
+build
+.gradle
+local.properties
+gradle-local.properties
+release.properties
 
-# Log file
+# jrebel
+rebel.xml
+rebel-remote.xml
+
+# run
+logs/
 *.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.nar
-*.ear
-*.zip
-*.tar.gz
-*.rar
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-.idea
 
-
-
+# others
 .DS_Store
-node_modules
-dist
-.vite
 
-
-# local env files
-.env.local
-.env.*.local
-
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Editor directories and files
-.idea
+# custom
+_backup
+application-*.properties
+*/bin/main
+*/*/bin/main
+*/bin/test
+*/*/bin/test
 .vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-.vite
-*.tgz
-
-*.tsbuildinfo
-log

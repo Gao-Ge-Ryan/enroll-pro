@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.EnterprisePartnerMapper">
+    <resultMap type="top.gaogle.pojo.model.EnterprisePartnerModel" id="EnterprisePartnerMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="logo" column="logo" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="enterpriseUrl" column="enterprise_url" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id, logo, name, description, enterprise_url, create_by, create_at, update_by, update_at, enterprise_id
+    </sql>
+
+
+    <insert id="insert">
+        insert into enterprise_partner(<include refid="sqlAllColumns"/>)
+        values
+        (#{id},#{logo}, #{name}, #{description}, #{enterpriseUrl}, #{createBy}, #{createAt}, #{updateBy}, #{updateAt},
+        #{enterpriseId})
+    </insert>
+    <update id="put">
+        update enterprise_partner
+        <set>
+            <if test="logo != null and logo != ''">
+                logo = #{logo},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="enterpriseUrl != null and enterpriseUrl != ''">
+                enterprise_url = #{enterpriseUrl},
+            </if>
+            <if test="createBy != null and createBy != ''">
+                create_by = #{createBy},
+            </if>
+            <if test="createAt != null">
+                create_at = #{createAt},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                enterprise_id = #{enterpriseId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="queryByPageAndCondition" resultMap="EnterprisePartnerMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise_partner
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="logo != null and logo != ''">
+                and logo = #{logo}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="description != null and description != ''">
+                and description = #{description}
+            </if>
+            <if test="enterpriseUrl != null and enterpriseUrl != ''">
+                and enterprise_url = #{enterpriseUrl}
+            </if>
+            <if test="createBy != null and createBy != ''">
+                and create_by = #{createBy}
+            </if>
+            <if test="createAt != null">
+                and create_at = #{createAt}
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                and update_by = #{updateBy}
+            </if>
+            <if test="updateAt != null">
+                and update_at = #{updateAt}
+            </if>
+            <if test="enterpriseId != null and enterpriseId != ''">
+                and enterprise_id = #{enterpriseId}
+            </if>
+        </where>
+    </select>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from enterprise_partner where id = #{id}
+    </delete>
+    <delete id="deleteByIdAndEnterpriseId">
+        delete from enterprise_partner where id = #{id} and enterprise_id = #{enterpriseId}
+    </delete>
+    <delete id="deleteByEnterpriseId">
+        delete from enterprise_partner where enterprise_id = #{enterpriseId}
+    </delete>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EnterprisePartnerMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise_partner
+        where id = #{id}
+    </select>
+
+    <select id="queryByEnterpriseId" resultMap="EnterprisePartnerMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from enterprise_partner
+        where enterprise_id = #{enterpriseId}
+    </select>
+
+</mapper>

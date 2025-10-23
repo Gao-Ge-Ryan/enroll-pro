@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.gaogle.dao.master.PublishSpotMapper">
+    <resultMap type="top.gaogle.pojo.model.PublishSpotModel" id="PublishSpotMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="registerPublishId" column="register_publish_id" jdbcType="VARCHAR"/>
+        <result property="spotInfoId" column="spot_info_id" jdbcType="VARCHAR"/>
+        <result property="spot" column="spot" jdbcType="VARCHAR"/>
+        <result property="spotAddress" column="spot_address" jdbcType="VARCHAR"/>
+        <result property="roomQuantity" column="room_quantity" jdbcType="INTEGER"/>
+        <result property="seatQuantity" column="seat_quantity" jdbcType="INTEGER"/>
+        <result property="enterpriseId" column="enterprise_id" jdbcType="VARCHAR"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="createAt" column="create_at" jdbcType="INTEGER"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="updateAt" column="update_at" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="sqlAllColumns">
+        id, register_publish_id, spot_info_id,spot, spot_address, room_quantity, seat_quantity, enterprise_id, create_by, create_at, update_by, update_at
+    </sql>
+
+    <insert id="insert">
+        insert into publish_spot(<include refid="sqlAllColumns"/>)
+        values (#{id},#{registerPublishId}, #{spotInfoId},#{spot}, #{spotAddress}, #{roomQuantity}, #{seatQuantity},
+        #{enterpriseId}, #{createBy}, #{createAt}, #{updateBy}, #{updateAt})
+    </insert>
+
+    <delete id="deleteByRegisterPublishId">
+        delete
+        from publish_spot
+        where register_publish_id = #{registerPublishId}
+    </delete>
+    <delete id="deleteByRegisterPublishIdAndSpotInfoId">
+        delete
+        from publish_spot
+        where register_publish_id = #{registerPublishId}
+          and spot_info_id = #{unbindSpotInfoId}
+    </delete>
+    <delete id="deleteByIdAndEnterpriseId">
+        delete
+        from publish_spot
+        where id = #{id} and enterprise_id = #{enterpriseId}
+    </delete>
+
+    <!--通过主键修改数据-->
+    <update id="putSpotInfo">
+        update publish_spot
+        <set>
+            <if test="spot != null and spot != ''">
+                spot = #{spot},
+            </if>
+            <if test="spotAddress != null and spotAddress != ''">
+                spot_address = #{spotAddress},
+            </if>
+            <if test="roomQuantity != null">
+                room_quantity = #{roomQuantity},
+            </if>
+            <if test="seatQuantity != null">
+                seat_quantity = #{seatQuantity},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by = #{updateBy},
+            </if>
+            <if test="updateAt != null">
+                update_at = #{updateAt},
+            </if>
+        </set>
+        where id = #{id} and enterprise_id = #{enterpriseId}
+    </update>
+    <select id="queryOneById" resultMap="PublishSpotMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from publish_spot
+        where id = #{id}
+    </select>
+
+    <select id="queryByRegisterPublishId" resultMap="PublishSpotMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from publish_spot
+        where register_publish_id =#{registerPublishId}
+        ORDER BY create_at ASC
+    </select>
+
+    <select id="queryByRegisterPublishIdForAllocateSpot" resultMap="PublishSpotMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from publish_spot
+        where register_publish_id =#{registerPublishId}
+        ORDER BY create_at ASC
+    </select>
+    <select id="queryBySpotAndRegisterPublishId" resultMap="PublishSpotMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from publish_spot
+        where register_publish_id =#{registerPublishId} and spot = #{spot}
+    </select>
+    <select id="queryExcludeIdBySpotAndRegisterPublishId" resultMap="PublishSpotMap">
+        select
+        <include refid="sqlAllColumns"/>
+        from publish_spot
+        where register_publish_id =#{registerPublishId} and spot = #{spot} and id !=#{id}
+    </select>
+
+</mapper>
