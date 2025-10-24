@@ -4,7 +4,7 @@ English version | [中文版](README_cn.md)
 
 [![LICENSE](https://img.shields.io/github/license/Gao-Ge-Ryan/enroll-pro)](/LICENSE)
 [![Releases](https://img.shields.io/github/v/release/Gao-Ge-Ryan/enroll-pro)](https://github.com/Gao-Ge-Ryan/enroll-pro/releases/latest)
-[![docker pulls](https://img.shields.io/docker/pulls/projecthami/hami.svg)](https://hub.docker.com/r/projecthami/hami)
+[![docker pulls](https://img.shields.io/docker/pulls/gaogegaogle/gao-ge-ryan)](https://hub.docker.com/repositories/gaogegaogle)
 [![website](https://img.shields.io/badge/website-blue)](https://www.enrollpro.top)
 [![Contact Me](https://img.shields.io/badge/ContactMe-QQ：3300755918-blue)](https://www.enrollpro.top)
 
