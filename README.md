@@ -2,94 +2,39 @@ English version | [中文版](README_cn.md)
 
 <img src="imgs/logo.png" width="600px">
 
-[![LICENSE](https://img.shields.io/github/license/Gao-Ge-Ryan/enroll-pro.svg)](/LICENSE)
-[![Releases](https://img.shields.io/github/v/release/Project-HAMi/HAMi)](https://github.com/Project-HAMi/HAMi/releases/latest)
+[![LICENSE](https://img.shields.io/github/license/Gao-Ge-Ryan/enroll-pro)](/LICENSE)
+[![Releases](https://img.shields.io/github/v/release/Project-HAMi/HAMi)](https://github.com/Gao-Ge-Ryan/enroll-pro/releases/latest)
 [![docker pulls](https://img.shields.io/docker/pulls/projecthami/hami.svg)](https://hub.docker.com/r/projecthami/hami)
+[![website](https://img.shields.io/badge/官网-blue)](https://www.enrollpro.top)
+[![Contact Me](https://img.shields.io/badge/联系我们QQ：3300755918-blue)](https://www.enrollpro.top)
 
 
-## Enroll Pro: 可定制化报名系统
+## Enroll Pro: Customizable Registration System
 
 ## Introduction
 
-HAMi, formerly known as 'k8s-vGPU-scheduler', is a Heterogeneous device management middleware for Kubernetes. It can manage different types of heterogeneous devices (like GPU, NPU, etc.), share heterogeneous devices among pods, make better scheduling decisions based on topology of devices and scheduling policies.
+A customizable registration system suitable for exam registration systems, event registration systems, or any other form of registration scenarios. This system can be used for production or enterprise-level projects. The project and code have undergone rigorous testing and support private deployments.
 
-It aims to remove the gap between different Heterogeneous devices, and provide a unified interface for users to manage with no changes to their applications. As of December 2024, HAMi has been widely used not only in Internet, public cloud and private cloud, but also broadly adopted in various vertical industries including finance, securities, energy, telecommunications, education, and manufacturing. More than 50 companies or institutions are not only end users but also active contributors. 
+### System Architecture
 
-![cncf_logo](imgs/cncf-logo.png)
-
-HAMi is a sandbox and [landscape](https://landscape.cncf.io/?item=orchestration-management--scheduling-orchestration--hami) project of  
-[Cloud Native Computing Foundation](https://cncf.io/)(CNCF), 
-[CNAI Landscape project](https://landscape.cncf.io/?group=cnai&item=cnai--general-orchestration--hami).
-
-
-## Device virtualization
-
-HAMi provides device virtualization for several heterogeneous devices including GPU, by supporting device sharing and device resource isolation. For the list of devices supporting device virtualization, see [supported devices](#supported-devices)
-
-### Device sharing
-
-- Allows partial device allocation by specifying device core usage.
-- Allows partial device allocation by specifying device memory.
-- Imposes a hard limit on streaming multiprocessors.
+- Backend: Java 8, SpringBoot 2.5.15, Mybatis, Gradle, Minio.
+- Frontend: Vue 3.
+- Database: Mysql 8.0.21, Redis (latest).
 - Requires zero changes to existing programs.
-- Support [dynamic-mig](docs/dynamic-mig-support.md) feature, [example](examples/nvidia/dynamic_mig_example.yaml)
-
-<img src="./imgs/example.png" width = "500" /> 
-
-### Device Resources Isolation
-
-A simple demonstration of device isolation:
-A task with the following resources will see 3000M device memory inside container:
-
-```yaml
-      resources:
-        limits:
-          nvidia.com/gpu: 1 # declare how many physical GPUs the pod needs
-          nvidia.com/gpumem: 3000 # identifies 3G GPU memory each physical GPU allocates to the pod
-```
-
-![img](./imgs/hard_limit.jpg)
-
-> Note:
-1. **After installing HAMi, the value of `nvidia.com/gpu` registered on the node defaults to the number of vGPUs.**
-2. **When requesting resources in a pod, `nvidia.com/gpu` refers to the number of physical GPUs required by the current pod.**
-
-### Supported devices
-
-[NVIDIA GPU](https://github.com/Project-HAMi/HAMi#preparing-your-gpu-nodes)   
-[Cambricon MLU](docs/cambricon-mlu-support.md)   
-[HYGON DCU](docs/hygon-dcu-support.md)   
-[Iluvatar CoreX GPU](docs/iluvatar-gpu-support.md)   
-[Moore Threads GPU](docs/mthreads-support.md)   
-[HUAWEI Ascend NPU](https://github.com/Project-HAMi/ascend-device-plugin/blob/main/README.md)   
-[MetaX GPU](docs/metax-support.md)   
-
-## Architect
-
-<img src="./imgs/hami-arch.png" width = "600" /> 
-
-HAMi consists of several components, including a unified mutatingwebhook, a unified scheduler extender, different device-plugins and different in-container virtualization technics for each heterogeneous AI devices.
+- Deployment: Docker, Docker-compose
 
 ## Quick Start
 
-### Choose your orchestrator
-
-[![kube-scheduler](https://img.shields.io/badge/kube-scheduler-blue)](#prerequisites)
-[![volcano-scheduler](https://img.shields.io/badge/volcano-scheduler-orange)](docs/how-to-use-volcano-vgpu.md)
-
 ### Prerequisites
 
-The list of prerequisites for running the NVIDIA device plugin is described below:
+Before running the system, ensure the following prerequisites are met:
 
-- NVIDIA drivers >= 440
-- nvidia-docker version > 2.0
-- default runtime configured as nvidia for containerd/docker/cri-o container runtime
-- Kubernetes version >= 1.18
-- glibc >= 2.17 & glibc < 2.30
-- kernel version >= 3.10
-- helm > 3.0
+- Operating System: Centos, Ubuntu, Debian
+- Disk Space: > 40GB
+- RAM: > 4GB
+- Required Software: Docker, Docker-compose
 
-### Install
+### Start the System
 
 First, Label your GPU nodes for scheduling with HAMi by adding the label "gpu=on". Without this label, the nodes cannot be managed by our scheduler.
 
@@ -119,67 +64,28 @@ kubectl get pods -n kube-system
 
 If both `hami-device-plugin` (formerly known as `vgpu-device-plugin`)  and `hami-scheduler` (formerly known as `vgpu-scheduler`)  pods are in the *Running* state, your installation is successful. You can try examples [here](examples/nvidia/default_use.yaml) 
 
-### WebUI
+### Web Interface Demo
 
-[HAMi-WebUI](https://github.com/Project-HAMi/HAMi-WebUI) is available after HAMi v2.4
+[User Portal](https://www.enrollpro.top) （Registration page, the interface for users to register.）
 
-For installation guide, click [here](https://github.com/Project-HAMi/HAMi-WebUI/blob/main/docs/installation/helm/index.md)
+[Enterprise Portal](https://enterprise.enrollpro.top) （Enterprise management interface for enterprises to manage and review their registration information.）
 
-### Monitor
+[Admin Portal](https://admin.enrollpro.top) （System administration interface for managing the system, user management, role permissions, log monitoring, etc.）
 
-Monitoring is automatically enabled after installation. Obtain an overview of cluster information by visiting the following URL:
-
-```
-http://{scheduler ip}:{monitorPort}/metrics
-```
-
-The default monitorPort is 31993; other values can be set using `--set devicePlugin.service.httpPort` during installation.
-
-Grafana dashboard [example](docs/dashboard.md)
-
-> **Note** The status of a node won't be collected before you submit a task
-
-## Notes
-
-- If you don't request vGPUs when using the device plugin with NVIDIA images all the GPUs on the machine may be exposed inside your container
-- Currently, A100 MIG can be supported in only "none" and "mixed" modes.
-- Tasks with the "nodeName" field cannot be scheduled at the moment; please use "nodeSelector" instead.
-
-## RoadMap, Governance & Contributing
-
-The project is governed by a group of [Maintainers](./MAINTAINERS.md) and [Contributors](./AUTHORS.md). How they are selected and govern is outlined in our [Governance Document](https://github.com/Project-HAMi/community/blob/main/governance.md).
-
-If you're interested in being a contributor and want to get involved in developing the HAMi code, please see [CONTRIBUTING](CONTRIBUTING.md) for details on submitting patches and the contribution workflow.
-
-See [RoadMap](docs/develop/roadmap.md) to see anything you interested.
+You can register for a test account or use the pre-configured super administrator account (Account: 123@qq.com , Password: Hh123@qqcom).
 
 ## Meeting & Contact
 
-The HAMi community is committed to fostering an open and welcoming environment, with several ways to engage with other users and developers.
+Enroll Pro is dedicated to fostering a friendly community environment and offering multiple ways for users and developers to interact.
 
-If you have any questions, please feel free to reach out to us through the following channels:
+If you have any questions, feel free to contact us via the following channels:
 
-- Regular Community Meeting: Friday at 16:00 UTC+8 (Chinese)(weekly). [Convert to your timezone](https://www.thetimezoneconverter.com/?t=14%3A30&tz=GMT%2B8&).
-  - [Meeting Notes and Agenda](https://docs.google.com/document/d/1YC6hco03_oXbF9IOUPJ29VWEddmITIKIfSmBX8JtGBw/edit#heading=h.g61sgp7w0d0c)
-  - [Meeting Link](https://meeting.tencent.com/dm/Ntiwq1BICD1P)
-- Email: refer to the [MAINTAINERS.md](MAINTAINERS.md) to find the email addresses of all maintainers. Feel free to contact them via email to report any issues or ask questions.
-- [mailing list](https://groups.google.com/forum/#!forum/hami-project)
-- [slack](https://cloud-native.slack.com/archives/C07T10BU4R2) | [Join](https://slack.cncf.io/)
-
-## Talks and References
-
-|                  | Link                                                                                                                    |
-|------------------|-------------------------------------------------------------------------------------------------------------------------|
-| CHINA CLOUD COMPUTING INFRASTRUCTURE DEVELOPER CONFERENCE (Beijing 2024) | [Unlocking heterogeneous AI infrastructure on k8s clusters](https://live.csdn.net/room/csdnnews/3zwDP09S) Starting from 03:06:15 |
-| KubeDay(Japan 2024) | [Unlocking Heterogeneous AI Infrastructure K8s Cluster:Leveraging the Power of HAMi](https://www.youtube.com/watch?v=owoaSb4nZwg) |
-| KubeCon & AI_dev Open Source GenAI & ML Summit(China 2024) | [Is Your GPU Really Working Efficiently in the Data Center?N Ways to Improve GPU Usage](https://www.youtube.com/watch?v=ApkyK3zLF5Q) |
-| KubeCon & AI_dev Open Source GenAI & ML Summit(China 2024) | [Unlocking Heterogeneous AI Infrastructure K8s Cluster](https://www.youtube.com/watch?v=kcGXnp_QShs)                                     |
-| KubeCon(EU 2024)| [Cloud Native Batch Computing with Volcano: Updates and Future](https://youtu.be/fVYKk6xSOsw) |
-
-## License
-
-HAMi is under the Apache 2.0 license. See the [LICENSE](LICENSE) file for details.
+- General Contact:
+  - [QQ: 3300755918]()
+- Email:
+  - [3300755918@qq.com]()
+  - [444238219@qq.com]()
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Project-HAMi/HAMi&type=Date)](https://star-history.com/#Project-HAMi/HAMi&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=star-history/star-history,Gao-Ge-Ryan/enroll-pro&type=date&legend=top-left)](https://www.star-history.com/#star-history/star-history&Gao-Ge-Ryan/enroll-pro&type=date&legend=top-left)
