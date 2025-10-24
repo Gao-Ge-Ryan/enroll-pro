@@ -25,7 +25,8 @@ A customizable registration system suitable for exam registration systems, event
 
 Note: For the microservices version, please visit [enroll-pro-microservice](https://github.com/Gao-Ge-Ryan/enroll-pro-microservice)
 
-
+## User Manual
+[Enroll Pro User Manual V1.0](./Enroll%20Pro%20可定制化报名系统用户手册V1.0.pdf)
 ## Quick Start
 
 ### Prerequisites

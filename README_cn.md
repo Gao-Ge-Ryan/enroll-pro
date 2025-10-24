@@ -23,6 +23,8 @@
 
 （注：微服务版本，请移步 [enroll-pro-microservice](https://github.com/Gao-Ge-Ryan/enroll-pro-microservice)）
 
+## 用户手册
+[Enroll Pro 用户手册V1.0](./Enroll%20Pro%20可定制化报名系统用户手册V1.0.pdf)
 ## 快速开始
 
 ### 前置条件
