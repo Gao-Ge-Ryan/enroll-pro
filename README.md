@@ -23,7 +23,7 @@ A customizable registration system suitable for exam registration systems, event
 - Requires zero changes to existing programs.
 - Deployment: Docker, Docker-compose
 
-Note: For the microservices version, please visit [enroll-pro-microservice](https://github.com/Gao-Ge-Ryan/-enroll-pro-microservice)
+Note: For the microservices version, please visit [enroll-pro-microservice](https://github.com/Gao-Ge-Ryan/enroll-pro-microservice)
 
 
 ## Quick Start
