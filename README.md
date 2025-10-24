@@ -36,33 +36,33 @@ Before running the system, ensure the following prerequisites are met:
 
 ### Start the System
 
-First, Label your GPU nodes for scheduling with HAMi by adding the label "gpu=on". Without this label, the nodes cannot be managed by our scheduler.
+Run the following command in the root directory under deploy:
 
 ```
-kubectl label nodes {nodeid} gpu=on
+docker-compose up -d
 ```
 
-Add our repo in helm
+Update the Nginx configuration file:
 
 ```
-helm repo add hami-charts https://project-hami.github.io/HAMi/
+cd /etc/nginx/conf.d
 ```
 
-Use the following command for deployment:
+Build the backend Docker image:
 
 ```
-helm install hami hami-charts/hami -n kube-system
+docker build -t gaogegaogle/gao-ge-ryan:latest .
 ```
-
-Customize your installation by adjusting the [configs](docs/config.md).
-
-Verify your installation using the following command:
-
+Set up a scheduled backup for the database:
 ```
-kubectl get pods -n kube-system
+crontab -e
 ```
-
-If both `hami-device-plugin` (formerly known as `vgpu-device-plugin`)  and `hami-scheduler` (formerly known as `vgpu-scheduler`)  pods are in the *Running* state, your installation is successful. You can try examples [here](examples/nvidia/default_use.yaml) 
+```
+59 23 * * * /opt/register-backend/bin/mysqlbak.sh >> /opt/register-backend/backups/mysqlbak/cron.log 2>&1
+```
+```
+crontab -l
+```
 
 ### Web Interface Demo
 

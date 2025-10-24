@@ -34,33 +34,33 @@
 
 ### 启动运行
 
-首先，进入根目录下deploy下执行以下命令：。
+首先，进入根目录下deploy下执行以下命令：
 
 ```
-kubectl label nodes {nodeid} gpu=on
+docker-compose up -d
 ```
 
-在 helm 中添加我们的仓库
+更新nginx配置文件,
 
 ```
-helm repo add hami-charts https://project-hami.github.io/HAMi/
+cd /etc/nginx/conf.d
 ```
 
-使用以下命令进行部署：
+构建后端镜像，
 
 ```
-helm install hami hami-charts/hami -n kube-system
+docker build -t gaogegaogle/gao-ge-ryan:latest .
 ```
-
-通过调整[配置](docs/config.md)来自定义你的安装。
-
-使用以下命令验证你的安装：
-
+数据库定时备份
 ```
-kubectl get pods -n kube-system
+crontab -e
 ```
-
-如果 `vgpu-device-plugin` 和 `vgpu-scheduler` pod 都处于 *Running* 状态，则安装成功。你可以在[这里](examples/nvidia/default_use.yaml)尝试示例。
+```
+59 23 * * * /opt/register-backend/bin/mysqlbak.sh >> /opt/register-backend/backups/mysqlbak/cron.log 2>&1
+```
+```
+crontab -l
+```
 
 ### Web 界面演示环境
 
