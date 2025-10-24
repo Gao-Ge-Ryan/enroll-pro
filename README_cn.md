@@ -3,10 +3,10 @@
 <img src="imgs/logo.png" width="600px">
 
 [![LICENSE](https://img.shields.io/github/license/Gao-Ge-Ryan/enroll-pro)](/LICENSE)
-[![Releases](https://img.shields.io/github/v/release/Project-HAMi/HAMi)](https://github.com/Gao-Ge-Ryan/enroll-pro/releases/latest)
+[![Releases](https://img.shields.io/github/v/release/Gao-Ge-Ryan/enroll-pro)](https://github.com/Gao-Ge-Ryan/enroll-pro/releases/latest)
 [![docker pulls](https://img.shields.io/docker/pulls/projecthami/hami.svg)](https://hub.docker.com/r/projecthami/hami)
 [![website](https://img.shields.io/badge/官网-blue)](https://www.enrollpro.top)
-[![Contact Me](https://img.shields.io/badge/联系我们QQ：3300755918-blue)](https://www.enrollpro.top)
+[![Contact Me](https://img.shields.io/badge/联系我们-QQ：3300755918-blue)](https://www.enrollpro.top)
 
 ## Enroll Pro: 可定制化报名系统
 

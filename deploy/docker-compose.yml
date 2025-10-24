@@ -1,0 +1,133 @@
+version: '3.3'
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    privileged: true
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '5g'
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./redis/data:/data
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/logs:/logs
+    #配置文件启动
+    command: redis-server /usr/local/etc/redis/redis.conf
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - enroll_pro_net
+  mysql:
+    # 指定容器的名称
+    container_name: mysql
+    # 指定镜像和版本
+    image: mysql:8.0.21
+    ports:
+      - "3306:3306"
+    restart: always
+    privileged: true
+    # 容器日志大小配置
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '5g'
+    environment:
+      # 配置root密码
+      MYSQL_ROOT_PASSWORD: Mysql123
+      MYSQL_TIMEZONE: "Asia/Shanghai"
+    volumes:
+      # 挂载数据目录
+      - "./mysql/data:/var/lib/mysql"
+      # 挂载配置文件目录
+      - "./mysql/config:/etc/mysql/conf.d"
+    networks:
+      - enroll_pro_net
+  minio:
+    image: minio/minio
+    container_name: minio
+    restart: always
+    privileged: true
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '5g'
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ACCESS_KEY=minio
+      - MINIO_SECRET_KEY=Minio123
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config:/root/.minio
+    command: server /data --console-address ":9000" --address ":9001"
+    networks:
+      - enroll_pro_net
+  style-register:
+    image: style-register:1.2.0
+    container_name: style-register
+    restart: always
+#    ports:
+#      - "8080:8080"
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '5g'
+    depends_on:
+      - mysql
+      - redis
+      - minio
+    environment:
+      - AUTHENTICATION_SECRET=gaogle
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PWD=ePFOn7gH6Bp2SOhKIH2V7VHChlYiMGsnUmn1uSZ3Md9z/HJBJf40DDwowIE5tNysihA01q4NB76G+z07aovdUQ==
+      - DB_DECRYPT=MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALHwESUrxpFmQYzGwRqn2xpW79LC/MpDArc72qwPA2nSenkdkTrpf+MQtXnUJ+z1Tac1WYtZNFB45FBebtQdFRECAwEAAQ==
+      - DB=style_register
+      - DB_SLAVE=style_register_slave
+      - REDIS_HOST=redis
+      - REDIS_PWD=Redis123
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - MINIO_HOST=minio
+      - MINIO_PORT=9001
+      - MINIO_USER=minio
+      - MINIO_PWD=Minio123
+    volumes:
+      - ./register-backend/logs:/opt/logs
+      - ./register-backend/jar:/opt/jar
+      - ./register-backend/conf:/opt/conf
+      - ./register-backend/bin:/opt/bin
+    networks:
+      - enroll_pro_net
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+#      - "81:81"
+#      - "82:82"
+      - "443:443"
+    volumes:
+      - ./nginx/conf/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf/certs:/etc/nginx/certs
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/html:/usr/share/nginx/html
+    depends_on:
+      - style-register
+    environment:
+      - TZ=Asia/Shanghai
+    command: "/bin/bash -c 'nginx -g \"daemon off;\"'"
+    networks:
+      - enroll_pro_net
+networks:
+  enroll_pro_net:
+    driver: bridge
